@@ -7,8 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Cinzel:wght@400;600;700&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-</head>
-<body>
 
 <div id="pg-wipe"></div>
 <div id="cur"></div>
@@ -29,7 +27,7 @@
     <div class="dl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
     <div><div class="dl-label">Shop</div><div class="dl-sub">Browse our store</div></div>
   </a>
-  <a href="https://discord.gg/YOUR_INVITE" target="_blank" rel="noopener" class="dl" id="nav-discord">
+  <a href="https://discord.gg/Ky2TQU6eHc" target="_blank" rel="noopener" class="dl" id="nav-discord">
     <div class="dl-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.18.118 18.302.16 18.418a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg></div>
     <div><div class="dl-label">Discord</div><div class="dl-sub">Join our community ↗</div></div>
   </a>
@@ -43,18 +41,104 @@
 
 <!-- ══ PAGE: HOME ══ -->
 <div class="page active" id="page-home">
-  <section class="hero">
+  <section class="hero page-blur-target">
     <div class="badge"><span class="bdot"></span>Established 2022 &nbsp;&#8212;&nbsp; Trusted Since Day One</div>
     <h1 class="hero-title">QUANTUM HUB</h1>
     <p class="hero-sub">Premium Script Hub</p>
     <p class="hero-italic">Precision-engineered scripts, built for those who demand the extraordinary</p>
     <div class="hdiv"></div>
-    <div class="hcta">
-      <a href="#" class="btn btn-p show-key">Get Key</a>
-      <a href="https://discord.gg/NNkrhgEJX8" target="_blank" rel="noopener" class="btn btn-o">Join Discord ↗</a>
+
+    <!-- CREDITS -->
+    <div class="credits-wrap">
+
+      <div class="credit-card" onclick="openDev('owner')">
+        <div class="credit-avatar">
+          <!-- Crown — Owner -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--pl)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 20h20M4 20L2 8l5 4 5-8 5 8 5-4-2 12"/>
+            <circle cx="12" cy="4" r="1" fill="var(--pl)" stroke="none"/>
+            <circle cx="2" cy="8" r="1" fill="var(--pl)" stroke="none"/>
+            <circle cx="22" cy="8" r="1" fill="var(--pl)" stroke="none"/>
+          </svg>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Owner</div>
+          <div class="credit-name">Trustenotcondom</div>
+        </div>
+        <svg class="credit-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+
+      <div class="credit-card" onclick="openDev('dev')">
+        <div class="credit-avatar">
+          <!-- Lua code braces — Script Developer -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--pl)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1"/>
+            <path d="M16 3h1a2 2 0 0 1 2 2v5a2 2 0 0 0 2 2 2 2 0 0 0-2 2v5a2 2 0 0 1-2 2h-1"/>
+          </svg>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Main Script Developer</div>
+          <div class="credit-name">Flazhygg</div>
+        </div>
+        <svg class="credit-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+
+      <div class="credit-card" onclick="openDev('webdev')">
+        <div class="credit-avatar">
+          <!-- Monitor/browser — Website Developer -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--pl)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <path d="M8 21h8M12 17v4"/>
+            <path d="M6 7h.01M9 7h6"/>
+          </svg>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Website Developer</div>
+          <div class="credit-name">Trustkiel</div>
+        </div>
+        <svg class="credit-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+
+      <div class="credit-card" onclick="openDev('tester')">
+        <div class="credit-avatar">
+          <!-- Checkmark shield — Tester -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--pl)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
+        </div>
+        <div class="credit-info">
+          <div class="credit-role">Web / Main Tester</div>
+          <div class="credit-name">cudal03ytph</div>
+        </div>
+        <svg class="credit-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+
     </div>
+
+    <div class="hcta">
+      <a href="https://discord.gg/Ky2TQU6eHc" target="_blank" rel="noopener" class="btn btn-o">Join Discord ↗</a>
+    </div>
+
     <div class="scroll-hint"><span>Scroll</span><div class="scroll-line"></div></div>
   </section>
+
+  <!-- DEV MODAL -->
+  <div id="dev-modal" onclick="handleModalClick(event)">
+    <div id="dev-modal-bg"></div>
+    <div class="dev-modal-box">
+      <div class="dev-modal-corn dmc-tl"></div>
+      <div class="dev-modal-corn dmc-tr"></div>
+      <div class="dev-modal-corn dmc-bl"></div>
+      <div class="dev-modal-corn dmc-br"></div>
+      <button class="dev-modal-close" onclick="closeDev()">✕</button>
+      <div class="dev-modal-avatar" id="dm-avatar"></div>
+      <div class="dev-modal-role" id="dm-role">Owner</div>
+      <div class="dev-modal-name" id="dm-name">Trustenotcondom</div>
+      <div class="dev-modal-divider"></div>
+      <p class="dev-modal-desc" id="dm-desc"></p>
+    </div>
+  </div>
 
   <div class="stats">
     <div class="stat"><span class="snum" data-t="4" data-s="+">4+</span><span class="slbl">Years Since Established</span></div>
@@ -194,7 +278,7 @@
       </a>
 
     </div>
-    <p class="key-note">Keys are free. Checkpoints support the development of Quantum Hub.<br>Having issues? Join our <a href="https://discord.gg/YOUR_INVITE" target="_blank" style="color:var(--pl);text-decoration:none">Discord ↗</a> for support.</p>
+    <p class="key-note">Keys are free. Checkpoints support the development of Quantum Hub.<br>Having issues? Join our <a href="https://discord.gg/Ky2TQU6eHc" target="_blank" style="color:var(--pl);text-decoration:none">Discord ↗</a> for support.</p>
   </div>
 </div>
 
@@ -313,7 +397,7 @@
          ════════════════════════════════════════ -->
     <p class="shop-note">
       Purchases are handled via our Discord server. DM an admin after joining.<br> <!-- ← EDIT THIS TEXT -->
-      <a href="https://discord.gg/YOUR_INVITE" target="_blank" rel="noopener">Join Discord ↗</a> <!-- ← DISCORD LINK -->
+      <a href="https://discord.gg/Ky2TQU6eHc" target="_blank" rel="noopener">Join Discord ↗</a> <!-- ← DISCORD LINK -->
       &nbsp;·&nbsp; All sales final. No refunds on digital goods. <!-- ← EDIT POLICY TEXT -->
     </p>
 
@@ -381,42 +465,63 @@
         </button>
       </div>
 
+      <div class="pay-panels-wrap">
       <!-- CARD PANEL -->
-      <div class="pay-panel active" id="panel-card">
-        <input class="checkout-field" type="text" placeholder="Full Name" autocomplete="name">
-        <input class="checkout-field" type="email" placeholder="Email Address" autocomplete="email">
-        <input class="checkout-field" id="card-num" type="text" placeholder="Card Number" maxlength="19" oninput="fmtCard(this)">
-        <div class="checkout-row">
-          <input class="checkout-field" type="text" placeholder="MM / YY" maxlength="7" oninput="fmtExpiry(this)">
-          <input class="checkout-field" type="text" placeholder="CVV" maxlength="4">
+      <div class="pay-panel active visible" id="panel-card">
+        <!-- WORK IN PROGRESS BANNER -->
+        <div style="border:1px solid rgba(176,110,232,.2);border-radius:10px;background:rgba(176,110,232,.05);padding:20px;text-align:center;margin-bottom:4px">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(176,110,232,.6)" stroke-width="1.4" stroke-linecap="round" style="margin-bottom:10px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p style="font-family:'Cinzel',serif;font-size:.85rem;color:var(--pl);letter-spacing:.12em;margin-bottom:6px">Work in Progress</p>
+          <p style="font-size:.62rem;color:var(--dim);line-height:1.75;letter-spacing:.06em">Card payment integration is currently being set up. Please use <strong style="color:var(--pl)">GCash</strong> or <strong style="color:var(--pl)">PayPal</strong> in the meantime.</p>
         </div>
       </div>
 
       <!-- PAYPAL PANEL -->
       <div class="pay-panel" id="panel-paypal">
-        <div style="text-align:center;padding:28px 0 22px">
-          <p style="font-family:'Cinzel',serif;font-size:.9rem;color:var(--pl);letter-spacing:.08em;margin-bottom:8px">PayPal</p>
-          <p style="font-size:.68rem;color:var(--dim);line-height:1.8;margin-bottom:22px">You will be redirected to PayPal to complete your payment securely.</p>
-          <!-- ← REPLACE href with your PayPal.me or PayPal payment link -->
-          <input class="checkout-field" type="email" placeholder="Your PayPal email (optional)">
+        <div style="text-align:center;padding:24px 0 8px">
+          <p style="font-family:'Cinzel',serif;font-size:.9rem;color:var(--pl);letter-spacing:.08em;margin-bottom:10px">PayPal</p>
+          <p style="font-size:.65rem;color:var(--dim);line-height:1.8;margin-bottom:24px">You will be redirected to PayPal to complete your payment securely. The PayPal app will open automatically if you have it installed.</p>
+          <!-- ← REPLACE YOUR_PAYPAL_USERNAME with your actual PayPal.me username -->
+          <button id="paypal-btn" onclick="openPayPal()"
+            style="display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px 20px;background:linear-gradient(135deg,#003087,#009cde,#012169);border:none;border-radius:10px;font-family:'Montserrat',sans-serif;font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:#fff;text-decoration:none;font-weight:600;cursor:pointer;transition:filter .3s,transform .3s cubic-bezier(.34,1.5,.64,1);will-change:transform;filter:drop-shadow(0 4px 14px rgba(0,112,186,.45))"
+            onmouseover="this.style.filter='drop-shadow(0 6px 20px rgba(0,112,186,.7))';this.style.transform='translateY(-2px) scale(1.02)'"
+            onmouseout="this.style.filter='drop-shadow(0 4px 14px rgba(0,112,186,.45))';this.style.transform=''">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Pay with PayPal
+          </button>
+          <p style="font-size:.5rem;letter-spacing:.15em;color:rgba(237,224,255,.25);margin-top:14px">Opens PayPal app · Falls back to browser</p>
         </div>
       </div>
 
       <!-- GCASH PANEL -->
       <div class="pay-panel" id="panel-gcash">
-        <div style="text-align:center;padding:28px 0 22px">
-          <p style="font-family:'Cinzel',serif;font-size:.9rem;color:var(--pl);letter-spacing:.08em;margin-bottom:8px">GCash</p>
-          <p style="font-size:.68rem;color:var(--dim);line-height:1.8;margin-bottom:22px">Send payment to the GCash number below, then submit your receipt via Discord for verification.</p>
-          <!-- ← REPLACE with your actual GCash number -->
-          <div style="border:1px solid rgba(176,110,232,.25);padding:14px 20px;margin-bottom:14px;font-family:'Cinzel',serif;font-size:1.1rem;color:var(--pl);letter-spacing:.12em">
-            09XX — XXX — XXXX <!-- ← YOUR GCASH NUMBER -->
-          </div>
-          <input class="checkout-field" type="text" placeholder="Reference Number (from GCash receipt)">
-          <input class="checkout-field" type="email" placeholder="Your Email Address">
+        <p style="font-family:'Cinzel',serif;font-size:.9rem;color:var(--pl);letter-spacing:.08em;margin-bottom:10px">GCash</p>
+        <p style="font-size:.66rem;color:rgba(176,110,232,.75);line-height:1.75;margin-bottom:18px;border:1px solid rgba(176,110,232,.18);border-radius:8px;padding:10px 14px;background:rgba(176,110,232,.05)">
+          ⚠ Make sure you are already a member of our Discord server before sending payment.
+        </p>
+        <p style="font-size:.65rem;color:var(--dim);line-height:1.8;margin-bottom:12px">Send the exact amount to the GCash number below, then fill in the details and attach your receipt screenshot.</p>
+        <p style="font-size:.62rem;color:rgba(255,90,90,.8);line-height:1.75;margin-bottom:16px;border:1px solid rgba(255,80,80,.2);border-radius:8px;padding:10px 14px;background:rgba(255,50,50,.05);letter-spacing:.04em">
+          ⚠ Submitting a fake receipt or an invalid reference number will result in a permanent ban from Quantum Hub and our Discord server.
+        </p>
+        <!-- ← REPLACE with your actual GCash number -->
+        <div id="gcash-number" onclick="copyGcash()" style="border:1px solid rgba(176,110,232,.25);border-radius:8px;padding:13px 18px;margin-bottom:16px;font-family:'Cinzel',serif;font-size:1.05rem;color:var(--pl);letter-spacing:.12em;text-align:center;cursor:pointer;transition:border-color .25s,filter .25s,background .25s;user-select:none;-webkit-user-select:none;position:relative" title="Click to copy">
+          <span id="gcash-num-text">09XX — XXX — XXXX</span>
+          <span id="gcash-copy-hint" style="display:block;font-family:'Montserrat',sans-serif;font-size:.42rem;letter-spacing:.22em;color:rgba(176,110,232,.45);margin-top:4px;text-transform:uppercase">Tap to copy</span>
+        </div>
+        <input class="checkout-field" style="border-radius:8px" id="gcash-ref" type="text" placeholder="Reference Number (from GCash receipt)">
+        <input class="checkout-field" style="border-radius:8px" id="gcash-discord" type="text" placeholder="Discord Username (e.g. username#0000)">
+        <!-- File drop zone -->
+        <div id="gcash-drop" style="border:1.5px dashed rgba(176,110,232,.3);border-radius:10px;padding:22px 16px;text-align:center;cursor:pointer;transition:border-color .25s,background .25s;margin-top:4px;position:relative" onclick="document.getElementById('gcash-file').click()" ondragover="gcashDragOver(event)" ondragleave="gcashDragLeave(event)" ondrop="gcashDrop(event)">
+          <input type="file" id="gcash-file" accept="image/*,.pdf" style="display:none" onchange="gcashFileChosen(this)">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(176,110,232,.5)" stroke-width="1.5" stroke-linecap="round" style="margin-bottom:8px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <p id="gcash-drop-label" style="font-size:.62rem;letter-spacing:.15em;color:rgba(176,110,232,.5);text-transform:uppercase">Drop receipt here or tap to upload</p>
         </div>
       </div>
+      </div><!-- /pay-panels-wrap -->
 
-      <button class="checkout-submit" onclick="handleCheckout()">
+      <div id="checkout-msg" style="display:none;border-radius:8px;padding:10px 14px;margin-top:14px;font-size:.64rem;letter-spacing:.1em;line-height:1.7;text-align:center"></div>
+
+      <button class="checkout-submit" id="confirm-btn" onclick="handleCheckout()">
         Confirm Order
       </button>
 
@@ -428,7 +533,7 @@
 
     <p class="checkout-note">
       After payment, access is granted via Discord.<br>
-      Join our <a href="https://discord.gg/YOUR_INVITE" target="_blank">Discord ↗</a> if you need help.
+      Join our <a href="https://discord.gg/Ky2TQU6eHc" target="_blank">Discord ↗</a> if you need help.
     </p>
   </div>
 </div>
