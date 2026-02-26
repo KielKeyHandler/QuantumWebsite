@@ -1,5 +1,5 @@
 // ── LINKS TO EDIT ──
-var DISCORD = 'https://discord.gg/YOUR_INVITE';
+var DISCORD = 'https://discord.gg/Ky2TQU6eHc';
 var LINKVERTISE = 'https://linkvertise.com/YOUR_ID';
 var LOOTLABS = 'https://loot-labs.com/YOUR_ID';
 
@@ -111,12 +111,39 @@ document.addEventListener('click', function(e) {
 
 // ── PAYMENT METHOD SWITCHER ──
 function switchPay(method) {
+  var currentPanel = document.querySelector('.pay-panel.active');
+  var nextPanel    = document.getElementById('panel-' + method);
+
+  if (currentPanel === nextPanel) return;
+
+  // Update tabs immediately
   document.querySelectorAll('.pay-tab').forEach(function(t){ t.classList.remove('active'); });
-  document.querySelectorAll('.pay-panel').forEach(function(p){ p.classList.remove('active'); });
-  var tab = document.querySelector('[data-method="'+method+'"]');
-  var panel = document.getElementById('panel-'+method);
-  if(tab) tab.classList.add('active');
-  if(panel) panel.classList.add('active');
+  var nextTab = document.querySelector('[data-method="' + method + '"]');
+  if (nextTab) nextTab.classList.add('active');
+
+  if (currentPanel) {
+    // Fade out current panel
+    currentPanel.classList.remove('visible');
+    setTimeout(function() {
+      // Fully hide it — no display, no space
+      currentPanel.classList.remove('active');
+      currentPanel.style.display = 'none';
+      // Show and animate in next
+      if (nextPanel) {
+        nextPanel.style.display = 'block';
+        nextPanel.classList.add('active');
+        nextPanel.offsetHeight; // reflow
+        nextPanel.classList.add('visible');
+      }
+    }, 200);
+  } else {
+    if (nextPanel) {
+      nextPanel.style.display = 'block';
+      nextPanel.classList.add('active');
+      nextPanel.offsetHeight;
+      nextPanel.classList.add('visible');
+    }
+  }
 }
 
 // ── CARD NUMBER FORMATTER ──
@@ -131,9 +158,162 @@ function fmtExpiry(el){
 }
 
 // ── CHECKOUT SUBMIT ──
-function handleCheckout(){
-  // ← REPLACE with your real payment logic
-  alert('Connect your payment provider here (Stripe, PayPal, GCash API, etc.)');
+// ← REPLACE this URL with your actual Discord webhook URL
+var WEBHOOK_URL = 'https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN';
+
+function showMsg(text, isError) {
+  var el = document.getElementById('checkout-msg');
+  el.style.display = 'block';
+  el.textContent = text;
+  el.style.background = isError ? 'rgba(220,50,50,.08)' : 'rgba(176,110,232,.08)';
+  el.style.border = isError ? '1px solid rgba(220,50,50,.25)' : '1px solid rgba(176,110,232,.2)';
+  el.style.color = isError ? '#ff8080' : 'var(--pl)';
+}
+
+function hideMsg() {
+  document.getElementById('checkout-msg').style.display = 'none';
+}
+
+function getActivePay() {
+  var active = document.querySelector('.pay-tab.active');
+  return active ? active.getAttribute('data-method') : 'card';
+}
+
+function fileToBase64(file) {
+  return new Promise(function(resolve, reject) {
+    var reader = new FileReader();
+    reader.onload = function(e) { resolve(e.target.result); };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function handleCheckout() {
+  var method = getActivePay();
+  hideMsg();
+
+  if (method !== 'gcash') {
+    showMsg('Please use GCash payment method to complete your order.', true);
+    return;
+  }
+
+  var ref     = (document.getElementById('gcash-ref').value || '').trim();
+  var discord = (document.getElementById('gcash-discord').value || '').trim();
+  var file    = document.getElementById('gcash-file').files[0];
+  var plan    = document.getElementById('co-plan-name').textContent || 'Unknown';
+  var price   = document.getElementById('co-price').textContent || '?';
+  var period  = document.getElementById('co-period').textContent || '';
+
+  // Get currency info
+  var curCode     = selectedCurrency || 'USD';
+  var curData     = FX.find(function(f){ return f.code === curCode; }) || FX[0];
+  var usdAmount   = currentCheckoutUSD || 2.99;
+  var converted   = convertUSD(usdAmount, curCode);
+  var priceInCur  = curCode === 'USD'
+    ? ('$' + usdAmount.toFixed(2))
+    : ('≈ ' + curData.symbol + converted + ' ' + curCode + ' ($' + usdAmount.toFixed(2) + ' USD)');
+
+  // ── VALIDATION ──
+  if (!discord) { showMsg('⚠ Please enter your Discord username.', true); return; }
+  if (!ref)     { showMsg('⚠ Please enter your GCash reference number.', true); return; }
+  if (!file)    { showMsg('⚠ Please attach your GCash receipt screenshot.', true); return; }
+
+  // Disable button while sending
+  var btn = document.getElementById('confirm-btn');
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  btn.style.opacity = '.6';
+
+  var now = new Date();
+  var timestamp = now.toISOString();
+
+  // Build premium Discord embed
+  var payload = {
+    username: 'Quantum Hub',
+    avatar_url: 'https://raw.githubusercontent.com/KielKeyHandler/icon/main/image_1.png',
+    embeds: [{
+      title: 'New GCash Payment Submission',
+      description: '> A new payment has been submitted and is awaiting verification.',
+      color: 0xB06EE8,
+      thumbnail: { url: 'https://raw.githubusercontent.com/KielKeyHandler/icon/main/image_1.png' },
+      fields: [
+        {
+          name: 'Plan',
+          value: '`' + plan + '` — **' + price + '** ' + period,
+          inline: false
+        },
+        {
+          name: 'Amount Paid',
+          value: '**' + priceInCur + '**',
+          inline: true
+        },
+        {
+          name: 'Currency',
+          value: curData.flag + ' `' + curCode + '` — ' + curData.name,
+          inline: true
+        },
+        {
+          name: 'Discord User',
+          value: '`' + discord + '`',
+          inline: true
+        },
+        {
+          name: 'Reference Number',
+          value: '`' + ref + '`',
+          inline: true
+        },
+        {
+          name: 'Receipt',
+          value: 'Screenshot attached below ↓',
+          inline: false
+        }
+      ],
+      image: {
+        url: 'attachment://' + file.name
+      },
+      footer: {
+        text: 'Quantum Hub · Payment System',
+        icon_url: 'https://raw.githubusercontent.com/KielKeyHandler/icon/main/image_1.png'
+      },
+      timestamp: timestamp
+    }]
+  };
+
+  // Send embed first, then image as attachment via FormData
+  var formData = new FormData();
+  formData.append('payload_json', JSON.stringify(payload));
+  formData.append('files[0]', file, file.name);
+
+  fetch(WEBHOOK_URL, {
+    method: 'POST',
+    body: formData
+  })
+  .then(function(res) {
+    if (res.ok || res.status === 204) {
+      showMsg('✦ Submitted successfully! Our team will verify your payment and grant access shortly.', false);
+      // Reset fields
+      document.getElementById('gcash-ref').value = '';
+      document.getElementById('gcash-discord').value = '';
+      document.getElementById('gcash-file').value = '';
+      document.getElementById('gcash-drop-label').textContent = 'Drop receipt here or tap to upload';
+      document.getElementById('gcash-drop-label').style.color = 'rgba(176,110,232,.5)';
+      var drop = document.getElementById('gcash-drop');
+      drop.style.borderStyle = 'dashed';
+      drop.style.borderColor = 'rgba(176,110,232,.3)';
+      drop.style.background = '';
+    } else {
+      res.text().then(function(t) { console.error(t); });
+      showMsg('✦ Submission failed. Please DM us on Discord directly.', true);
+    }
+  })
+  .catch(function() {
+    showMsg('✦ Network error. Please check your connection and try again.', true);
+  })
+  .finally(function() {
+    btn.disabled = false;
+    btn.textContent = 'Confirm Order';
+    btn.style.opacity = '';
+  });
 }
 
 // ── CURSOR ──
@@ -343,3 +523,151 @@ updateAllPrices();
 
 // set home page visible on load
 document.getElementById('page-home').style.opacity='1';
+
+// ── PAYPAL REDIRECT ──
+// ← Replace YOUR_PAYPAL_USERNAME with your actual PayPal.me username
+var PAYPAL_ME = 'https://paypal.me/YOUR_PAYPAL_USERNAME';
+
+function openPayPal() {
+  var price = (document.getElementById('co-price').textContent || '').replace('$','').trim();
+  var webUrl = PAYPAL_ME + (price ? '/' + price : '');
+
+  var isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  if (isMobile) {
+    // Try PayPal app deep link first
+    var appUrl = 'paypal://paypalme/' + PAYPAL_ME.split('paypal.me/')[1];
+    var start = Date.now();
+    // Attempt app open via hidden iframe
+    var iframe = document.createElement('iframe');
+    iframe.style.cssText = 'display:none;width:0;height:0;border:0';
+    iframe.src = appUrl;
+    document.body.appendChild(iframe);
+    // If app didn't open within 1.2s, fall back to browser
+    setTimeout(function() {
+      document.body.removeChild(iframe);
+      if (Date.now() - start < 1500) {
+        window.open(webUrl, '_blank', 'noopener');
+      }
+    }, 1200);
+  } else {
+    // PC — just open in new tab
+    window.open(webUrl, '_blank', 'noopener,noreferrer');
+  }
+}
+function copyGcash() {
+  var numEl  = document.getElementById('gcash-num-text');
+  var hint   = document.getElementById('gcash-copy-hint');
+  var box    = document.getElementById('gcash-number');
+  var number = numEl.textContent.replace(/\s*—\s*/g, '').trim();
+
+  navigator.clipboard.writeText(number).catch(function() {
+    // fallback for older Android browsers
+    var ta = document.createElement('textarea');
+    ta.value = number;
+    ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+
+  // Visual feedback
+  hint.textContent = '✦ Copied!';
+  hint.style.color = 'var(--pl)';
+  box.style.borderColor = 'rgba(176,110,232,.7)';
+  box.style.filter = 'drop-shadow(0 0 10px rgba(176,110,232,.3))';
+  box.style.background = 'rgba(176,110,232,.07)';
+
+  setTimeout(function() {
+    hint.textContent = 'Tap to copy';
+    hint.style.color = 'rgba(176,110,232,.45)';
+    box.style.borderColor = 'rgba(176,110,232,.25)';
+    box.style.filter = '';
+    box.style.background = '';
+  }, 2000);
+}
+function gcashDragOver(e) {
+  e.preventDefault();
+  var drop = document.getElementById('gcash-drop');
+  drop.style.borderColor = 'rgba(176,110,232,.7)';
+  drop.style.background = 'rgba(176,110,232,.07)';
+}
+function gcashDragLeave(e) {
+  var drop = document.getElementById('gcash-drop');
+  drop.style.borderColor = 'rgba(176,110,232,.3)';
+  drop.style.background = '';
+}
+function gcashDrop(e) {
+  e.preventDefault();
+  gcashDragLeave(e);
+  var file = e.dataTransfer.files[0];
+  if (file) gcashShowFile(file);
+}
+function gcashFileChosen(input) {
+  if (input.files[0]) gcashShowFile(input.files[0]);
+}
+function gcashShowFile(file) {
+  var label = document.getElementById('gcash-drop-label');
+  var drop  = document.getElementById('gcash-drop');
+  label.textContent = '✦ ' + file.name;
+  label.style.color = 'var(--pl)';
+  drop.style.borderStyle = 'solid';
+  drop.style.borderColor = 'rgba(176,110,232,.5)';
+  drop.style.background  = 'rgba(176,110,232,.06)';
+}
+var DEVS = {
+  owner: {
+    avatar: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--pl)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M4 20L2 8l5 4 5-8 5 8 5-4-2 12"/><circle cx="12" cy="4" r="1" fill="var(--pl)" stroke="none"/><circle cx="2" cy="8" r="1" fill="var(--pl)" stroke="none"/><circle cx="22" cy="8" r="1" fill="var(--pl)" stroke="none"/></svg>',
+    role:   'Owner',
+    name:   'Trustenotcondom',
+    desc:   'The founder and owner of Quantum Hub. Responsible for the overall vision, direction, and management of the project. Keeps the team together and ensures Quantum Hub stays at the top of its game since 2022.'
+  },
+  dev: {
+    avatar: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--pl)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5a2 2 0 0 0 2 2h1"/><path d="M16 3h1a2 2 0 0 1 2 2v5a2 2 0 0 0 2 2 2 2 0 0 0-2 2v5a2 2 0 0 1-2 2h-1"/></svg>',
+    role:   'Main Script Developer',
+    name:   'Flazhygg',
+    desc:   'The core engineer behind the Quantum Hub Roblox script. Writes and maintains the Lua codebase that powers every feature — from game exploits to automation logic. Specializes in Roblox script execution, LuaU optimization, and keeping the script undetected and updated across every Roblox patch.'
+  },
+  webdev: {
+    avatar: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--pl)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M6 7h.01M9 7h6"/></svg>',
+    role:   'Website Developer',
+    name:   'Trustkiel',
+    desc:   'Designed and built the Quantum Hub website from the ground up. Handles the front-end, UI/UX, page structure, and all visual elements you see here. Ensures the site is fast, polished, and works on every device.'
+  },
+  tester: {
+    avatar: '<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--pl)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>',
+    role:   'Web / Main Tester',
+    name:   'cudal03ytph',
+    desc:   'The quality assurance backbone of Quantum Hub. Tests the website and the Roblox Lua script across different executors and environments, catches bugs before release, and makes sure everything runs perfectly for the community.'
+  }
+};
+
+function openDev(key) {
+  var d = DEVS[key];
+  if (!d) return;
+  document.getElementById('dm-avatar').innerHTML = d.avatar;
+  document.getElementById('dm-role').textContent   = d.role;
+  document.getElementById('dm-name').textContent   = d.name;
+  document.getElementById('dm-desc').textContent   = d.desc;
+  document.getElementById('dev-modal').classList.add('open');
+  document.body.classList.add('modal-open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDev() {
+  document.getElementById('dev-modal').classList.remove('open');
+  document.body.classList.remove('modal-open');
+  document.body.style.overflow = '';
+}
+
+function handleModalClick(e) {
+  if (e.target === document.getElementById('dev-modal') || e.target === document.getElementById('dev-modal-bg')) {
+    closeDev();
+  }
+}
+
+// Close modal on Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeDev();
+});
